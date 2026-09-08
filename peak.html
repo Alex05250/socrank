@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>极限性能模式 (Peak Performance) - 移动端 SoC 综合天梯榜</title>
+  <style>
+
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(22, 30, 49, 0.72);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover-border: rgba(56, 189, 248, 0.35);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #38bdf8;
+      --accent-grad: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      --daily-grad: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      --peak-grad: linear-gradient(135deg, #f43f5e 0%, #fb923c 100%);
+      --daily-accent: #10b981;
+      --peak-accent: #f43f5e;
+      --apple: #a855f7;
+      --qualcomm: #ef4444;
+      --mediatek: #f59e0b;
+      --hisilicon: #ec4899;
+      --samsung: #3b82f6;
+      --google: #10b981;
+      --xiaomi: #f97316;
+      --other: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(129, 140, 248, 0.07) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.5) 0px, transparent 100%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 0 20px;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon {
+      font-size: 22px;
+      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: var(--accent-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid var(--card-border);
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .nav-item:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-item.active {
+      color: #fff;
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      font-weight: 600;
+    }
+
+    .nav-gh {
+      color: var(--text-dim);
+      border: 1px solid var(--card-border);
+      margin-left: 6px;
+    }
+
+    .nav-gh:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+      flex: 1;
+      width: 100%;
+    }
+
+    .mode-header {
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .mode-tag-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .mode-tag-daily {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .mode-tag-peak {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .page-title {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .page-title.daily-title {
+      background: var(--daily-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .page-title.peak-title {
+      background: var(--peak-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .page-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .mode-switch-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      backdrop-filter: blur(12px);
+    }
+
+    .mode-switch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-to-daily {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .btn-to-daily:hover {
+      background: rgba(16, 185, 129, 0.35);
+      transform: translateX(2px);
+    }
+
+    .btn-to-peak {
+      background: rgba(244, 63, 94, 0.2);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.4);
+    }
+    .btn-to-peak:hover {
+      background: rgba(244, 63, 94, 0.35);
+      transform: translateX(2px);
+    }
+
+    .formula-banner {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      backdrop-filter: blur(12px);
+    }
+
+    .formula-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .formula-tag b {
+      color: var(--accent);
+    }
+
+    .controls {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(12px);
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(11, 15, 25, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .filter-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f19;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .sort-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .sort-select {
+      background: rgba(11, 15, 25, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .list-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chip-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: grid;
+      grid-template-columns: 44px 230px 1fr 100px;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+    }
+
+    .chip-card:hover {
+      border-color: var(--card-hover-border);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .chip-card.baseline {
+      border: 1px dashed rgba(236, 72, 153, 0.5);
+      background: rgba(236, 72, 153, 0.05);
+    }
+
+    .rank-num {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-dim);
+      text-align: center;
+      line-height: 1;
+    }
+
+    .rank-1 { color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); font-size: 20px; }
+    .rank-2 { color: #94a3b8; text-shadow: 0 0 10px rgba(148, 163, 184, 0.5); font-size: 18px; }
+    .rank-3 { color: #d97706; text-shadow: 0 0 10px rgba(217, 119, 6, 0.5); font-size: 18px; }
+
+    .chip-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow: hidden;
+    }
+
+    .chip-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-badge {
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .brand-Apple { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .brand-Qualcomm { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .brand-MediaTek { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .brand-HiSilicon { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
+    .brand-Samsung { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .brand-Google { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .brand-Xiaomi { background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.3); }
+
+    .chip-meta {
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .year-tag {
+      color: var(--text-muted);
+    }
+
+    .bars-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .bar-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bar-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      width: 60px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+
+    .bar-fill.overall-daily {
+      background: var(--daily-grad);
+    }
+
+    .bar-fill.overall-peak {
+      background: var(--peak-grad);
+    }
+
+    .bar-fill.cpu-single {
+      background: linear-gradient(90deg, #38bdf8 0%, #818cf8 100%);
+    }
+
+    .bar-fill.cpu-multi {
+      background: linear-gradient(90deg, #f59e0b 0%, #ef4444 100%);
+    }
+
+    .bar-fill.cpu {
+      background: linear-gradient(90deg, #38bdf8 0%, #3b82f6 100%);
+    }
+
+    .bar-fill.gpu {
+      background: linear-gradient(90deg, #10b981 0%, #06b6d4 100%);
+    }
+
+    .bar-val {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      width: 44px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+
+    .score-box {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .score-main {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .score-main.daily-score-color {
+      color: #34d399;
+    }
+
+    .score-main.peak-score-color {
+      color: #fb7185;
+    }
+
+    .score-unit {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .chip-drawer {
+      grid-column: 1 / -1;
+      display: none;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      margin-top: 8px;
+    }
+
+    .chip-card.expanded .chip-drawer {
+      display: block;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .detail-card {
+      background: rgba(11, 15, 25, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+
+    .detail-card strong {
+      display: block;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--text-dim);
+      font-size: 13px;
+      border-top: 1px solid var(--card-border);
+      background: rgba(11, 15, 25, 0.6);
+      margin-top: auto;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    @media (max-width: 860px) {
+      .chip-card {
+        grid-template-columns: 36px 1fr 80px;
+        gap: 10px;
+        padding: 12px 14px;
+      }
+      .bars-container {
+        grid-column: 1 / -1;
+        order: 3;
+        margin-top: 4px;
+      }
+      .score-box {
+        order: 2;
+      }
+      .score-main {
+        font-size: 18px;
+      }
+      .nav-links .nav-icon {
+        display: none;
+      }
+      .nav-brand .brand-badge {
+        display: none;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-title">SocRank</span>
+        <span class="brand-badge">双轨综合天梯</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html" class="nav-item ">
+          <span class="nav-icon">🏠</span> 首页概览
+        </a>
+        <a href="daily.html" class="nav-item ">
+          <span class="nav-icon">⚡</span> 日常流畅模式
+        </a>
+        <a href="peak.html" class="nav-item active">
+          <span class="nav-icon">🚀</span> 极限性能模式
+        </a>
+        <a href="https://github.com/Alex05250/socrank" target="_blank" rel="noopener" class="nav-item nav-gh">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </nav>
+    </div>
+  </header>
+
+
+  <div class="container">
+    <div class="mode-header">
+      <div class="mode-tag-top mode-tag-peak">🔥 极致性能释放 · 极客压榨天花板</div>
+      <h1 class="page-title peak-title">极限性能模式 (Peak Performance Profile)</h1>
+      <p class="page-desc">展现芯片在全核狂飙、极限游戏与 3DMark 烤机下的绝对算力释放，衡量芯片架构与制程的极限物理天花板。</p>
+    </div>
+
+    <div class="mode-switch-bar">
+      <span>⚡ 想要更贴近被动散热日常使用、应用秒开与滑动掉帧表现？</span>
+      <a href="daily.html" class="mode-switch-btn btn-to-daily">切换至 日常流畅模式 →</a>
+    </div>
+
+    <div class="formula-banner">
+      <div class="formula-tag"><b>基准</b> 华为麒麟 9000 = 100 分</div>
+      <div class="formula-tag"><b>综合权重</b> CPU 60% + GPU 40%</div>
+      <div class="formula-tag"><b>CPU 内部</b> 单核 30% + 多核 70% (GB6)</div>
+      <div class="formula-tag"><b>GPU 测标</b> 3DMark WLE (新架构按 SNL 当量折算)</div>
+      <div class="formula-tag"><b>收录范围</b> 苹果 A13 之后主流平台 (75款)</div>
+    </div>
+
+    <div class="controls">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="搜索芯片型号、厂商 (如 骁龙 8 Elite, 天玑 9500, 苹果 A19 Pro)...">
+      </div>
+      <div class="filter-group" id="brandFilters">
+        <button class="filter-btn active" data-brand="all">全部厂商</button>
+        <button class="filter-btn" data-brand="Apple">苹果</button>
+        <button class="filter-btn" data-brand="Qualcomm">高通骁龙</button>
+        <button class="filter-btn" data-brand="MediaTek">联发科天玑</button>
+        <button class="filter-btn" data-brand="HiSilicon">华为麒麟</button>
+        <button class="filter-btn" data-brand="Samsung">三星 Exynos</button>
+        <button class="filter-btn" data-brand="Google">谷歌 Tensor</button>
+        <button class="filter-btn" data-brand="Xiaomi">小米玄戒</button>
+      </div>
+      <div class="sort-group">
+        <span>排序:</span>
+        <select class="sort-select" id="sortSelect">
+          <option value="overall">极限综合评分 (高到低)</option>
+          <option value="cpu">CPU 性能 (高到低)</option>
+          <option value="gpu">GPU 性能 (高到低)</option>
+          <option value="gb6s">GB6 单核 (高到低)</option>
+          <option value="gb6m">GB6 多核 (高到低)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="list-wrapper" id="chipList">
+      <!-- Generated by JS -->
+    </div>
+  </div>
+
+  <footer>
+    <p>SocRank 数据源基于主流跑分实测及实验室样本归一化整理 · <a href="https://github.com/Alex05250/socrank" target="_blank">GitHub 开源</a></p>
+  </footer>
+
+  <script src="data.js"></script>
+  <script>
+
+    let currentFilter = 'all';
+    let currentSort = 'overall';
+    let searchQuery = '';
+
+    const listContainer = document.getElementById('chipList');
+    const searchInput = document.getElementById('searchInput');
+    const brandFilters = document.getElementById('brandFilters');
+    const sortSelect = document.getElementById('sortSelect');
+
+    function renderList() {
+      const data = window.CHIPS_DATA || [];
+      const maxOverall = Math.max(...data.map(c => c.overall));
+      const maxCPU = Math.max(...data.map(c => c.cpu_score));
+      const maxGPU = Math.max(...data.map(c => c.gpu_score));
+
+      let filtered = data.filter(chip => {
+        const matchBrand = (currentFilter === 'all') || (chip.brand === currentFilter);
+        const q = searchQuery.trim().toLowerCase();
+        const matchSearch = !q || 
+          chip.name_cn.toLowerCase().includes(q) || 
+          chip.name.toLowerCase().includes(q) || 
+          chip.brand_cn.toLowerCase().includes(q) || 
+          chip.brand.toLowerCase().includes(q) ||
+          (chip.gpu && chip.gpu.toLowerCase().includes(q)) ||
+          (chip.year && chip.year.toString().includes(q));
+        return matchBrand && matchSearch;
+      });
+
+      filtered.sort((a, b) => {
+        if (currentSort === 'overall') return b.overall - a.overall;
+        if (currentSort === 'cpu') return b.cpu_score - a.cpu_score;
+        if (currentSort === 'gpu') return b.gpu_score - a.gpu_score;
+        if (currentSort === 'gb6s') return b.gb6s - a.gb6s;
+        if (currentSort === 'gb6m') return b.gb6m - a.gb6m;
+        return 0;
+      });
+
+      listContainer.innerHTML = '';
+      if (filtered.length === 0) {
+        listContainer.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-muted);">未找到符合条件的芯片</div>';
+        return;
+      }
+
+      filtered.forEach((chip, index) => {
+        const isBaseline = chip.name.includes("Kirin 9000") && !chip.name.includes("9000S");
+        const rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : ''));
+        
+        const card = document.createElement('div');
+        card.className = `chip-card ${isBaseline ? 'baseline' : ''}`;
+        card.innerHTML = `
+          <div class="rank-num ${rankClass}">${index + 1}</div>
+          <div class="chip-info">
+            <div class="chip-name-row">
+              <span class="chip-name" title="${chip.name_cn} (${chip.name})">${chip.name_cn}</span>
+              <span class="brand-badge brand-${chip.brand}">${chip.brand_cn}</span>
+              ${isBaseline ? '<span style="font-size:10px; background:#ec4899; color:#fff; padding:1px 5px; border-radius:3px; font-weight:bold;">100基准</span>' : ''}
+            </div>
+            <div class="chip-meta">
+              <span class="year-tag">${chip.year ? chip.year + '年' : '年份待核'}</span>
+              <span>•</span>
+              <span>${chip.process || '工艺未知'}</span>
+              <span>•</span>
+              <span>${chip.gpu || 'GPU 未知'}</span>
+            </div>
+          </div>
+          <div class="bars-container">
+            <div class="bar-item">
+              <span class="bar-label">极限综合</span>
+              <div class="bar-track">
+                <div class="bar-fill overall-peak" style="width: ${(chip.overall / maxOverall * 100).toFixed(1)}%"></div>
+              </div>
+              <span class="bar-val">${chip.overall.toFixed(1)}</span>
+            </div>
+            <div class="bar-item">
+              <span class="bar-label">CPU 60%</span>
+              <div class="bar-track">
+                <div class="bar-fill cpu" style="width: ${(chip.cpu_score / maxCPU * 100).toFixed(1)}%"></div>
+              </div>
+              <span class="bar-val">${chip.cpu_score.toFixed(1)}</span>
+            </div>
+            <div class="bar-item">
+              <span class="bar-label">GPU 40%</span>
+              <div class="bar-track">
+                <div class="bar-fill gpu" style="width: ${(chip.gpu_score / maxGPU * 100).toFixed(1)}%"></div>
+              </div>
+              <span class="bar-val">${chip.gpu_score.toFixed(1)}</span>
+            </div>
+          </div>
+          <div class="score-box">
+            <div class="score-main peak-score-color">${chip.overall.toFixed(1)}</div>
+            <div class="score-unit">极限性能指数</div>
+          </div>
+          <div class="chip-drawer">
+            <div class="detail-grid">
+              <div class="detail-card">
+                <strong>CPU Geekbench 6 详情 (60% 综合权重)</strong>
+                单核: ${chip.gb6s} 分 · 多核: ${chip.gb6m} 分<br>
+                CPU 归一化分: ${chip.cpu_score} 分 (单30% + 多70%)
+              </div>
+              <div class="detail-card">
+                <strong>GPU 图形测试详情 (40% 综合权重)</strong>
+                ${chip.wle_raw ? `3DMark WLE 原生: ${chip.wle_raw} 分<br>` : ''}
+                ${chip.snl_raw ? `3DMark Steel Nomad Light: ${chip.snl_raw} 分<br>` : ''}
+                WLE 当量: ${Math.round(chip.wle_equiv)} 分 (${chip.gpu_method})<br>
+                GPU 归一化分: ${chip.gpu_score} 分
+              </div>
+              <div class="detail-card">
+                <strong>极限性能计算公式</strong>
+                ${chip.cpu_score} × 0.60 + ${chip.gpu_score} × 0.40<br>
+                = <strong>${chip.overall}</strong> 分<br>
+                <em>(华为麒麟 9000 = 100.0)</em>
+              </div>
+            </div>
+          </div>
+        `;
+
+        card.addEventListener('click', () => {
+          card.classList.toggle('expanded');
+        });
+
+        listContainer.appendChild(card);
+      });
+    }
+
+    brandFilters.addEventListener('click', (e) => {
+      if (e.target.classList.contains('filter-btn')) {
+        brandFilters.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        currentFilter = e.target.dataset.brand;
+        renderList();
+      }
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderList();
+    });
+
+    sortSelect.addEventListener('change', (e) => {
+      currentSort = e.target.value;
+      renderList();
+    });
+
+    renderList();
+
+  </script>
+</body>
+</html>
