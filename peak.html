@@ -288,20 +288,26 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 14px;
-      padding: 14px 18px;
+      padding: 16px 18px;
       margin-bottom: 20px;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 14px;
+      backdrop-filter: blur(12px);
+    }
+
+    .control-top-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
       align-items: center;
       justify-content: space-between;
-      backdrop-filter: blur(12px);
     }
 
     .search-box {
       position: relative;
       flex: 1;
-      min-width: 220px;
+      min-width: 240px;
     }
 
     .search-box input {
@@ -321,6 +327,21 @@
       box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
     }
 
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .filter-label {
+      color: var(--text-dim);
+      font-weight: 600;
+      width: 60px;
+      flex-shrink: 0;
+    }
+
     .filter-group {
       display: flex;
       flex-wrap: wrap;
@@ -331,7 +352,7 @@
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
-      padding: 6px 12px;
+      padding: 5px 12px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 500;
@@ -349,6 +370,13 @@
       background: var(--accent);
       color: #0b0f19;
       border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .filter-btn.active-tablet {
+      background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+      color: #fff;
+      border-color: #a855f7;
       font-weight: 700;
     }
 
@@ -383,7 +411,7 @@
       border-radius: 12px;
       padding: 14px 18px;
       display: grid;
-      grid-template-columns: 44px 230px 1fr 100px;
+      grid-template-columns: 44px 240px 1fr 100px;
       align-items: center;
       gap: 16px;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -425,7 +453,7 @@
     .chip-name-row {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
@@ -453,6 +481,25 @@
     .brand-Samsung { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
     .brand-Google { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
     .brand-Xiaomi { background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.3); }
+
+    .device-badge {
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .badge-tablet-only {
+      background: rgba(168, 85, 247, 0.2);
+      color: #e9d5ff;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+
+    .badge-both {
+      background: rgba(56, 189, 248, 0.15);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
 
     .chip-meta {
       font-size: 12px;
@@ -637,6 +684,10 @@
       .nav-brand .brand-badge {
         display: none;
       }
+      .filter-label {
+        width: 100%;
+        margin-bottom: 2px;
+      }
     }
 
   </style>
@@ -673,7 +724,7 @@
     <div class="mode-header">
       <div class="mode-tag-top mode-tag-peak">🔥 极致性能释放 · 极客压榨天花板</div>
       <h1 class="page-title peak-title">极限性能模式 (Peak Performance Profile)</h1>
-      <p class="page-desc">展现芯片在全核狂飙、极限游戏与 3DMark 烤机下的绝对算力释放，衡量芯片架构与制程的极限物理天花板。</p>
+      <p class="page-desc">展现芯片在全核狂飙、极限游戏与 3DMark 烤机下的绝对算力释放，衡量芯片架构与制程的极限物理天花板。支持手机与平板跨界筛选。</p>
     </div>
 
     <div class="mode-switch-bar">
@@ -686,34 +737,52 @@
       <div class="formula-tag"><b>综合权重</b> CPU 60% + GPU 40%</div>
       <div class="formula-tag"><b>CPU 内部</b> 单核 30% + 多核 70% (GB6)</div>
       <div class="formula-tag"><b>GPU 测标</b> 3DMark WLE (新架构按 SNL 当量折算)</div>
-      <div class="formula-tag"><b>收录范围</b> 苹果 A13 之后主流平台 (75款)</div>
+      <div class="formula-tag"><b>收录范围</b> 手机 & 平板跨界平台 (81款)</div>
     </div>
 
+
     <div class="controls">
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="搜索芯片型号、厂商 (如 骁龙 8 Elite, 天玑 9500, 苹果 A19 Pro)...">
+      <div class="control-top-row">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="搜索型号、厂商或形态 (如 iPad M4, 骁龙 X Elite, 天玑 9400)...">
+        </div>
+        <div class="sort-group">
+          <span>排序:</span>
+          <select class="sort-select" id="sortSelect">
+            <option value='overall'>极限综合评分 (高到低)</option>
+            <option value='cpu'>CPU 性能 (高到低)</option>
+            <option value="gb6s">GB6 单核 (高到低)</option>
+            <option value="gb6m">GB6 多核 (高到低)</option>
+            <option value="gpu">GPU 性能 (高到低)</option>
+            <option value="year">发布年份 (新到旧)</option>
+          </select>
+        </div>
       </div>
-      <div class="filter-group" id="brandFilters">
-        <button class="filter-btn active" data-brand="all">全部厂商</button>
-        <button class="filter-btn" data-brand="Apple">苹果</button>
-        <button class="filter-btn" data-brand="Qualcomm">高通骁龙</button>
-        <button class="filter-btn" data-brand="MediaTek">联发科天玑</button>
-        <button class="filter-btn" data-brand="HiSilicon">华为麒麟</button>
-        <button class="filter-btn" data-brand="Samsung">三星 Exynos</button>
-        <button class="filter-btn" data-brand="Google">谷歌 Tensor</button>
-        <button class="filter-btn" data-brand="Xiaomi">小米玄戒</button>
+
+      <div class="filter-row">
+        <div class="filter-label">设备形态:</div>
+        <div class="filter-group" id="deviceFilters">
+          <button class="filter-btn active" data-device="all">🌐 全形态通榜 (81)</button>
+          <button class="filter-btn" data-device="phone">📱 智能手机 (75)</button>
+          <button class="filter-btn" data-device="tablet">📟 平板 / 跨界 (18)</button>
+        </div>
       </div>
-      <div class="sort-group">
-        <span>排序:</span>
-        <select class="sort-select" id="sortSelect">
-          <option value="overall">极限综合评分 (高到低)</option>
-          <option value="cpu">CPU 性能 (高到低)</option>
-          <option value="gpu">GPU 性能 (高到低)</option>
-          <option value="gb6s">GB6 单核 (高到低)</option>
-          <option value="gb6m">GB6 多核 (高到低)</option>
-        </select>
+
+      <div class="filter-row">
+        <div class="filter-label">厂商平台:</div>
+        <div class="filter-group" id="brandFilters">
+          <button class="filter-btn active" data-brand="all">全部厂商</button>
+          <button class="filter-btn" data-brand="Apple">苹果</button>
+          <button class="filter-btn" data-brand="Qualcomm">高通骁龙</button>
+          <button class="filter-btn" data-brand="MediaTek">联发科天玑</button>
+          <button class="filter-btn" data-brand="HiSilicon">华为麒麟</button>
+          <button class="filter-btn" data-brand="Samsung">三星 Exynos</button>
+          <button class="filter-btn" data-brand="Google">谷歌 Tensor</button>
+          <button class="filter-btn" data-brand="Xiaomi">小米玄戒</button>
+        </div>
       </div>
     </div>
+
 
     <div class="list-wrapper" id="chipList">
       <!-- Generated by JS -->
@@ -727,12 +796,14 @@
   <script src="data.js"></script>
   <script>
 
+    let currentDevice = 'all';
     let currentFilter = 'all';
     let currentSort = 'overall';
     let searchQuery = '';
 
     const listContainer = document.getElementById('chipList');
     const searchInput = document.getElementById('searchInput');
+    const deviceFilters = document.getElementById('deviceFilters');
     const brandFilters = document.getElementById('brandFilters');
     const sortSelect = document.getElementById('sortSelect');
 
@@ -743,7 +814,18 @@
       const maxGPU = Math.max(...data.map(c => c.gpu_score));
 
       let filtered = data.filter(chip => {
+        // 设备形态过滤
+        let matchDevice = true;
+        if (currentDevice === 'phone') {
+          matchDevice = chip.device_type === 'phone' || chip.device_type === 'both';
+        } else if (currentDevice === 'tablet') {
+          matchDevice = chip.device_type === 'tablet' || chip.device_type === 'both';
+        }
+
+        // 品牌过滤
         const matchBrand = (currentFilter === 'all') || (chip.brand === currentFilter);
+
+        // 搜索
         const q = searchQuery.trim().toLowerCase();
         const matchSearch = !q || 
           chip.name_cn.toLowerCase().includes(q) || 
@@ -752,7 +834,8 @@
           chip.brand.toLowerCase().includes(q) ||
           (chip.gpu && chip.gpu.toLowerCase().includes(q)) ||
           (chip.year && chip.year.toString().includes(q));
-        return matchBrand && matchSearch;
+
+        return matchDevice && matchBrand && matchSearch;
       });
 
       filtered.sort((a, b) => {
@@ -761,6 +844,7 @@
         if (currentSort === 'gpu') return b.gpu_score - a.gpu_score;
         if (currentSort === 'gb6s') return b.gb6s - a.gb6s;
         if (currentSort === 'gb6m') return b.gb6m - a.gb6m;
+        if (currentSort === 'year') return (b.year || 0) - (a.year || 0);
         return 0;
       });
 
@@ -774,6 +858,13 @@
         const isBaseline = chip.name.includes("Kirin 9000") && !chip.name.includes("9000S");
         const rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : ''));
         
+        let deviceBadge = '';
+        if (chip.device_type === 'tablet') {
+          deviceBadge = '<span class="device-badge badge-tablet-only">📟 平板专属</span>';
+        } else if (chip.device_type === 'both') {
+          deviceBadge = '<span class="device-badge badge-both">📱📟 双栖</span>';
+        }
+
         const card = document.createElement('div');
         card.className = `chip-card ${isBaseline ? 'baseline' : ''}`;
         card.innerHTML = `
@@ -782,6 +873,7 @@
             <div class="chip-name-row">
               <span class="chip-name" title="${chip.name_cn} (${chip.name})">${chip.name_cn}</span>
               <span class="brand-badge brand-${chip.brand}">${chip.brand_cn}</span>
+              ${deviceBadge}
               ${isBaseline ? '<span style="font-size:10px; background:#ec4899; color:#fff; padding:1px 5px; border-radius:3px; font-weight:bold;">100基准</span>' : ''}
             </div>
             <div class="chip-meta">
@@ -834,10 +926,10 @@
                 GPU 归一化分: ${chip.gpu_score} 分
               </div>
               <div class="detail-card">
-                <strong>极限性能计算公式</strong>
-                ${chip.cpu_score} × 0.60 + ${chip.gpu_score} × 0.40<br>
-                = <strong>${chip.overall}</strong> 分<br>
-                <em>(华为麒麟 9000 = 100.0)</em>
+                <strong>形态与极限性能计算拆解</strong>
+                形态属性: ${chip.device_type === 'tablet' ? '📟 平板专属 (10W~15W 散热与 128-bit 显存)' : (chip.device_type === 'both' ? '📱📟 手机/平板双栖旗舰' : '📱 智能手机专属 (3.5W~5W 温控线)')}<br>
+                极限公式: ${chip.cpu_score} × 0.60 + ${chip.gpu_score} × 0.40<br>
+                = <strong>${chip.overall}</strong> 分 (基准 9000 = 100)
               </div>
             </div>
           </div>
@@ -850,6 +942,15 @@
         listContainer.appendChild(card);
       });
     }
+
+    deviceFilters.addEventListener('click', (e) => {
+      if (e.target.classList.contains('filter-btn')) {
+        deviceFilters.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        currentDevice = e.target.dataset.device;
+        renderList();
+      }
+    });
 
     brandFilters.addEventListener('click', (e) => {
       if (e.target.classList.contains('filter-btn')) {
