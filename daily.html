@@ -729,7 +729,7 @@
       <div class="formula-tag"><b>基准</b> 华为麒麟 9000 (手机) = 100 分</div>
       <div class="formula-tag"><b>综合权重</b> GB6 单核 60% + GB6 多核 20% + GPU 20%</div>
       <div class="formula-tag"><b>单核锚点</b> 贴合 3.5W~5W 日用甜点区</div>
-      <div class="formula-tag"><b>收录范围</b> 手机 & 平板细分核心 (94款)</div>
+      <div class="formula-tag"><b>收录范围</b> 手机 & 平板细分核心 (95款)</div>
     </div>
 
 
@@ -754,8 +754,8 @@
       <div class="filter-row">
         <div class="filter-label">设备形态:</div>
         <div class="filter-group" id="deviceFilters">
-          <button class="filter-btn active" data-device="all">🌐 全形态通榜 (94)</button>
-          <button class="filter-btn" data-device="phone">📱 智能手机 (75)</button>
+          <button class="filter-btn active" data-device="all">🌐 全形态通榜 (95)</button>
+          <button class="filter-btn" data-device="phone">📱 智能手机 (76)</button>
           <button class="filter-btn" data-device="tablet">📟 平板 / 跨界 (19)</button>
         </div>
       </div>
@@ -813,15 +813,10 @@
         // 品牌过滤
         const matchBrand = (currentFilter === 'all') || (chip.brand === currentFilter);
 
-        // 搜索
-        const q = searchQuery.trim().toLowerCase();
-        const matchSearch = !q || 
-          chip.name_cn.toLowerCase().includes(q) || 
-          chip.name.toLowerCase().includes(q) || 
-          chip.brand_cn.toLowerCase().includes(q) || 
-          chip.brand.toLowerCase().includes(q) ||
-          (chip.gpu && chip.gpu.toLowerCase().includes(q)) ||
-          (chip.year && chip.year.toString().includes(q));
+        // 搜索 (无缝支持中英文、去空格匹配及形态别名)
+        const q = searchQuery.trim().toLowerCase().replace(/\s+/g, '');
+        const haystack = (chip.name_cn + ' ' + chip.name + ' ' + chip.brand_cn + ' ' + chip.brand + ' ' + (chip.gpu || '') + ' ' + (chip.year || '') + ' ' + (chip.device_type === 'tablet' ? '平板 跨界' : '手机')).toLowerCase().replace(/\s+/g, '');
+        const matchSearch = !q || haystack.includes(q);
 
         return matchDevice && matchBrand && matchSearch;
       });
