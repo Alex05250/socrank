@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SocRank 移动端 SoC 双轨综合性能天梯榜</title>
+  <title>SocRank 移动与平板 SoC 双轨综合性能天梯榜</title>
   <style>
 
     :root {
@@ -288,20 +288,26 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 14px;
-      padding: 14px 18px;
+      padding: 16px 18px;
       margin-bottom: 20px;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 14px;
+      backdrop-filter: blur(12px);
+    }
+
+    .control-top-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
       align-items: center;
       justify-content: space-between;
-      backdrop-filter: blur(12px);
     }
 
     .search-box {
       position: relative;
       flex: 1;
-      min-width: 220px;
+      min-width: 240px;
     }
 
     .search-box input {
@@ -321,6 +327,21 @@
       box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
     }
 
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .filter-label {
+      color: var(--text-dim);
+      font-weight: 600;
+      width: 60px;
+      flex-shrink: 0;
+    }
+
     .filter-group {
       display: flex;
       flex-wrap: wrap;
@@ -331,7 +352,7 @@
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
-      padding: 6px 12px;
+      padding: 5px 12px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 500;
@@ -349,6 +370,13 @@
       background: var(--accent);
       color: #0b0f19;
       border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .filter-btn.active-tablet {
+      background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+      color: #fff;
+      border-color: #a855f7;
       font-weight: 700;
     }
 
@@ -383,7 +411,7 @@
       border-radius: 12px;
       padding: 14px 18px;
       display: grid;
-      grid-template-columns: 44px 230px 1fr 100px;
+      grid-template-columns: 44px 240px 1fr 100px;
       align-items: center;
       gap: 16px;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -425,7 +453,7 @@
     .chip-name-row {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
@@ -453,6 +481,25 @@
     .brand-Samsung { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
     .brand-Google { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
     .brand-Xiaomi { background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.3); }
+
+    .device-badge {
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .badge-tablet-only {
+      background: rgba(168, 85, 247, 0.2);
+      color: #e9d5ff;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+
+    .badge-both {
+      background: rgba(56, 189, 248, 0.15);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
 
     .chip-meta {
       font-size: 12px;
@@ -637,6 +684,10 @@
       .nav-brand .brand-badge {
         display: none;
       }
+      .filter-label {
+        width: 100%;
+        margin-bottom: 2px;
+      }
     }
 
 
@@ -676,7 +727,7 @@
       font-size: 16px;
       line-height: 1.7;
       color: var(--text-muted);
-      max-width: 740px;
+      max-width: 760px;
       margin: 0 auto 36px;
     }
 
@@ -861,7 +912,7 @@
 
     .methods-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 16px;
     }
 
@@ -953,9 +1004,9 @@
 
   <div class="container">
     <section class="hero">
-      <div class="hero-badge">移动 SoC 双轨评测体系 · 2026 最新收录 75 款芯片</div>
+      <div class="hero-badge">移动与平板 SoC 双轨评测体系 · 2026 全面收录 81 款核心</div>
       <h1 class="hero-title">移动端 SoC 综合性能天梯榜</h1>
-      <p class="hero-sub">拒绝 15W 烤机虚标 · 还原「日常流畅 4W 甜点」与「极限性能压榨」的双重视角。<br>以华为麒麟 9000 = 100 为基准锚点，全芯片统一中文化核查与当量折算。</p>
+      <p class="hero-sub">拒绝 15W 烤机虚标 · 还原「日常流畅 4W 甜点」与「极限性能压榨」的双重视角。<br>新增 iPad M 系列与二合一平板跨界核心 · 支持「手机/平板」形态精准筛选。</p>
     </section>
 
     <!-- Dual Mode Cards -->
@@ -968,27 +1019,27 @@
             <h2 class="portal-title">日常流畅模式</h2>
             <div class="portal-formula">GB6 单核 60% + GB6 多核 20% + GPU 20%</div>
             <p class="portal-desc">
-              手机被动散热日常稳态温控线在 3.5W~5W。日常 App 秒开、手势打断与滑动抗掉帧 90% 依赖单大核瞬间爆发（Burst）。挤掉 15W 全核烤机水分，真实反映温控甜点区流畅度。
+              日常 App 秒开、手势打断与滑动抗掉帧 90% 依赖单大核瞬间爆发（Burst）。挤掉 15W 全核烤机水分，真实反映温控甜点区流畅度。提供手机与平板专属筛选。
             </p>
           </div>
           <div class="preview-list">
-            <div class="preview-title">日常榜 TOP 3 领跑者</div>
+            <div class="preview-title">全形态日常榜 TOP 3 领跑者</div>
             <div class="preview-item">
-              <span>1. 小米玄戒 O3</span>
+              <span>1. 苹果 M5 (iPad) <span style="font-size:11px; color:#c084fc;">[📟平板]</span></span>
+              <span class="preview-score" style="color:#34d399;">383.7 分</span>
+            </div>
+            <div class="preview-item">
+              <span>2. 小米玄戒 O3 <span style="font-size:11px; color:#fb923c;">[📱手机]</span></span>
               <span class="preview-score" style="color:#34d399;">369.0 分</span>
             </div>
             <div class="preview-item">
-              <span>2. 苹果 A19 Pro <span style="font-size:11px; color:#34d399;">(↑反超)</span></span>
-              <span class="preview-score" style="color:#34d399;">306.9 分</span>
-            </div>
-            <div class="preview-item">
-              <span>3. 骁龙 8 Elite Gen 5</span>
-              <span class="preview-score" style="color:#34d399;">299.0 分</span>
+              <span>3. 苹果 M4 (iPad) <span style="font-size:11px; color:#c084fc;">[📟平板]</span></span>
+              <span class="preview-score" style="color:#34d399;">332.5 分</span>
             </div>
           </div>
         </div>
         <a href="daily.html" class="portal-btn btn-daily-cta">
-          进入日常流畅天梯榜 (75款) →
+          进入日常流畅天梯榜 (81款) →
         </a>
       </div>
 
@@ -1004,36 +1055,43 @@
             </p>
           </div>
           <div class="preview-list">
-            <div class="preview-title">极限榜 TOP 3 领跑者</div>
+            <div class="preview-title">全形态极限榜 TOP 3 领跑者</div>
             <div class="preview-item">
-              <span>1. 小米玄戒 O3</span>
+              <span>1. 小米玄戒 O3 <span style="font-size:11px; color:#fb923c;">[📱手机]</span></span>
               <span class="preview-score" style="color:#fb7185;">445.8 分</span>
             </div>
             <div class="preview-item">
-              <span>2. 三星 Exynos 2600</span>
-              <span class="preview-score" style="color:#fb7185;">321.5 分</span>
+              <span>2. 苹果 M5 (iPad) <span style="font-size:11px; color:#c084fc;">[📟平板]</span></span>
+              <span class="preview-score" style="color:#fb7185;">442.1 分</span>
             </div>
             <div class="preview-item">
-              <span>3. 天玑 9500</span>
-              <span class="preview-score" style="color:#fb7185;">314.8 分</span>
+              <span>3. 苹果 M4 (iPad) <span style="font-size:11px; color:#c084fc;">[📟平板]</span></span>
+              <span class="preview-score" style="color:#fb7185;">374.9 分</span>
             </div>
           </div>
         </div>
         <a href="peak.html" class="portal-btn btn-peak-cta">
-          进入极限性能天梯榜 (75款) →
+          进入极限性能天梯榜 (81款) →
         </a>
       </div>
     </div>
 
     <!-- Methodology Section -->
     <section class="section-block">
-      <h2 class="section-title">💡 双轨设计哲学与方法论</h2>
+      <h2 class="section-title">💡 双轨设计哲学与形态解构</h2>
       <div class="methods-grid">
+        <div class="method-card">
+          <div class="method-icon">📟</div>
+          <h3>平板跨界芯片的「形态降维」</h3>
+          <p>
+            iPad M 系列与高通骁龙 X Elite 拥有平板大尺寸机身背板散热优势（被动温控线高达 10W~15W）与 128-bit 显存位宽。通过形态筛选器，既可保持手机榜单的纯净对比，又可纵览平板跨界压制。
+          </p>
+        </div>
         <div class="method-card">
           <div class="method-icon">🌡️</div>
           <h3>为什么放弃单一跑分榜？</h3>
           <p>
-            近三代旗舰全核烤机功耗动辄 12W~16W，但无主动散热的玻璃手机持续散热极限仅约 4W。如果只看全核多核峰值，疯狂堆压超频的“火龙”就会占尽便宜，而日常真正重要的低功耗能效被彻底掩盖。
+            现代旗舰全核烤机功耗动辄 12W~16W，但手机被动散热极限仅约 4W。如果只看全核多核峰值，疯狂堆压超频的“火龙”就会占尽便宜，而日常真正重要的低功耗能效被彻底掩盖。
           </p>
         </div>
         <div class="method-card">
@@ -1043,13 +1101,6 @@
             微信滑动、动效打断、网页冷启均属于 200ms~800ms 的瞬时脉冲（Burst）。Geekbench 6 单核大核满载功耗天然落在 3.5W~5.5W，是硅片在 4W 甜点区最干净、最无水分的真实体验代理指标。
           </p>
         </div>
-        <div class="method-card">
-          <div class="method-icon">🎯</div>
-          <h3>为什么锚定华为麒麟 9000 = 100 分？</h3>
-          <p>
-            麒麟 9000 是移动端 5G 与 5nm 时代的里程碑架构。以其作为全榜基准（在日常模式与极限模式下均精确为 100.0 分），能让每一位读者直观感知历代芯片对 5nm 时代的跨代超越幅度。
-          </p>
-        </div>
       </div>
     </section>
 
@@ -1057,7 +1108,7 @@
     <section class="section-block">
       <h2 class="section-title">📊 双模式排名反差实测对比</h2>
       <p style="color:var(--text-muted); font-size:13px; margin-bottom:14px;">
-        观察代表性芯片在「日常流畅模式」与「极限性能模式」下的排名与得分反差（如苹果 A 系列在日常榜的显著跃升）：
+        观察跨形态代表性芯片在「日常流畅模式」与「极限性能模式」下的排名与得分反差：
       </p>
       <div class="table-container">
         <table class="comp-table">
@@ -1074,14 +1125,43 @@
 
         <tr >
           <td style="padding:12px 14px; font-weight:700; white-space:nowrap;">
+            苹果 M5 (iPad)
+            <span class="brand-badge brand-Apple" style="margin-left:6px;">苹果</span>
+            <span class="device-badge badge-tablet-only" style="margin-left:4px;">📟 平板专属</span>
+            
+          </td>
+          <td style="padding:12px 14px; text-align:center;">#1 (<b style="color:#34d399;">383.7</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#2 (<b style="color:#fb7185;">442.1</b>)</td>
+          <td style="padding:12px 14px; text-align:center;"><span style="color:#34d399; font-weight:700;">↑ +1 (日常跃升)</span></td>
+          <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 4133 · 多: 15280 · 当量: 10320</td>
+        </tr>
+    
+
+        <tr >
+          <td style="padding:12px 14px; font-weight:700; white-space:nowrap;">
             小米玄戒 O3
             <span class="brand-badge brand-Xiaomi" style="margin-left:6px;">小米</span>
             
+            
           </td>
-          <td style="padding:12px 14px; text-align:center;">#1 (<b style="color:#34d399;">369.0</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#2 (<b style="color:#34d399;">369.0</b>)</td>
           <td style="padding:12px 14px; text-align:center;">#1 (<b style="color:#fb7185;">445.8</b>)</td>
-          <td style="padding:12px 14px; text-align:center;"><span style="color:#94a3b8;">= 锚定持平</span></td>
+          <td style="padding:12px 14px; text-align:center;"><span style="color:#fb7185; font-weight:600;">↓ 1 (烤机挤水)</span></td>
           <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 3715 · 多: 14213 · 当量: 11474</td>
+        </tr>
+    
+
+        <tr >
+          <td style="padding:12px 14px; font-weight:700; white-space:nowrap;">
+            苹果 M4 (iPad)
+            <span class="brand-badge brand-Apple" style="margin-left:6px;">苹果</span>
+            <span class="device-badge badge-tablet-only" style="margin-left:4px;">📟 平板专属</span>
+            
+          </td>
+          <td style="padding:12px 14px; text-align:center;">#3 (<b style="color:#34d399;">332.5</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#3 (<b style="color:#fb7185;">374.9</b>)</td>
+          <td style="padding:12px 14px; text-align:center;"><span style="color:#94a3b8;">= 锚定持平</span></td>
+          <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 3683 · 多: 13402 · 当量: 8345</td>
         </tr>
     
 
@@ -1090,11 +1170,26 @@
             苹果 A19 Pro
             <span class="brand-badge brand-Apple" style="margin-left:6px;">苹果</span>
             
+            
           </td>
-          <td style="padding:12px 14px; text-align:center;">#2 (<b style="color:#34d399;">306.9</b>)</td>
-          <td style="padding:12px 14px; text-align:center;">#5 (<b style="color:#fb7185;">298.9</b>)</td>
-          <td style="padding:12px 14px; text-align:center;"><span style="color:#34d399; font-weight:700;">↑ +3 (日常跃升)</span></td>
+          <td style="padding:12px 14px; text-align:center;">#4 (<b style="color:#34d399;">306.9</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#8 (<b style="color:#fb7185;">298.9</b>)</td>
+          <td style="padding:12px 14px; text-align:center;"><span style="color:#34d399; font-weight:700;">↑ +4 (日常跃升)</span></td>
           <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 3970 · 多: 10558 · 当量: 5969</td>
+        </tr>
+    
+
+        <tr >
+          <td style="padding:12px 14px; font-weight:700; white-space:nowrap;">
+            高通骁龙 X Elite (X1E-80)
+            <span class="brand-badge brand-Qualcomm" style="margin-left:6px;">高通</span>
+            <span class="device-badge badge-tablet-only" style="margin-left:4px;">📟 平板专属</span>
+            
+          </td>
+          <td style="padding:12px 14px; text-align:center;">#9 (<b style="color:#34d399;">276.8</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#4 (<b style="color:#fb7185;">336.2</b>)</td>
+          <td style="padding:12px 14px; text-align:center;"><span style="color:#fb7185; font-weight:600;">↓ 5 (烤机挤水)</span></td>
+          <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 2790 · 多: 14300 · 当量: 6450</td>
         </tr>
     
 
@@ -1103,10 +1198,11 @@
             骁龙 8 Elite Gen 5
             <span class="brand-badge brand-Qualcomm" style="margin-left:6px;">高通</span>
             
+            
           </td>
-          <td style="padding:12px 14px; text-align:center;">#3 (<b style="color:#34d399;">299.0</b>)</td>
-          <td style="padding:12px 14px; text-align:center;">#4 (<b style="color:#fb7185;">310.1</b>)</td>
-          <td style="padding:12px 14px; text-align:center;"><span style="color:#34d399; font-weight:700;">↑ +1 (日常跃升)</span></td>
+          <td style="padding:12px 14px; text-align:center;">#5 (<b style="color:#34d399;">299.0</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#7 (<b style="color:#fb7185;">310.1</b>)</td>
+          <td style="padding:12px 14px; text-align:center;"><span style="color:#34d399; font-weight:700;">↑ +2 (日常跃升)</span></td>
           <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 3639 · 多: 11047 · 当量: 6490</td>
         </tr>
     
@@ -1116,24 +1212,12 @@
             三星 Exynos 2600
             <span class="brand-badge brand-Samsung" style="margin-left:6px;">三星</span>
             
-          </td>
-          <td style="padding:12px 14px; text-align:center;">#4 (<b style="color:#34d399;">288.4</b>)</td>
-          <td style="padding:12px 14px; text-align:center;">#2 (<b style="color:#fb7185;">321.5</b>)</td>
-          <td style="padding:12px 14px; text-align:center;"><span style="color:#fb7185; font-weight:600;">↓ 2 (烤机挤水)</span></td>
-          <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 3235 · 多: 10904 · 当量: 7462</td>
-        </tr>
-    
-
-        <tr >
-          <td style="padding:12px 14px; font-weight:700; white-space:nowrap;">
-            天玑 9500
-            <span class="brand-badge brand-MediaTek" style="margin-left:6px;">联发科</span>
             
           </td>
-          <td style="padding:12px 14px; text-align:center;">#5 (<b style="color:#34d399;">287.6</b>)</td>
-          <td style="padding:12px 14px; text-align:center;">#3 (<b style="color:#fb7185;">314.8</b>)</td>
-          <td style="padding:12px 14px; text-align:center;"><span style="color:#fb7185; font-weight:600;">↓ 2 (烤机挤水)</span></td>
-          <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 3293 · 多: 10243 · 当量: 7486</td>
+          <td style="padding:12px 14px; text-align:center;">#6 (<b style="color:#34d399;">288.4</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#5 (<b style="color:#fb7185;">321.5</b>)</td>
+          <td style="padding:12px 14px; text-align:center;"><span style="color:#fb7185; font-weight:600;">↓ 1 (烤机挤水)</span></td>
+          <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 3235 · 多: 10904 · 当量: 7462</td>
         </tr>
     
 
@@ -1142,24 +1226,26 @@
             苹果 A18 Pro
             <span class="brand-badge brand-Apple" style="margin-left:6px;">苹果</span>
             
+            
           </td>
-          <td style="padding:12px 14px; text-align:center;">#7 (<b style="color:#34d399;">265.1</b>)</td>
-          <td style="padding:12px 14px; text-align:center;">#11 (<b style="color:#fb7185;">246.8</b>)</td>
-          <td style="padding:12px 14px; text-align:center;"><span style="color:#34d399; font-weight:700;">↑ +4 (日常跃升)</span></td>
+          <td style="padding:12px 14px; text-align:center;">#10 (<b style="color:#34d399;">265.1</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#16 (<b style="color:#fb7185;">246.8</b>)</td>
+          <td style="padding:12px 14px; text-align:center;"><span style="color:#34d399; font-weight:700;">↑ +6 (日常跃升)</span></td>
           <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 3570 · 多: 8923 · 当量: 4590</td>
         </tr>
     
 
         <tr >
           <td style="padding:12px 14px; font-weight:700; white-space:nowrap;">
-            骁龙 8 Elite (Gen 4)
-            <span class="brand-badge brand-Qualcomm" style="margin-left:6px;">高通</span>
+            苹果 M2 (iPad)
+            <span class="brand-badge brand-Apple" style="margin-left:6px;">苹果</span>
+            <span class="device-badge badge-tablet-only" style="margin-left:4px;">📟 平板专属</span>
             
           </td>
-          <td style="padding:12px 14px; text-align:center;">#9 (<b style="color:#34d399;">251.2</b>)</td>
-          <td style="padding:12px 14px; text-align:center;">#8 (<b style="color:#fb7185;">264.1</b>)</td>
-          <td style="padding:12px 14px; text-align:center;"><span style="color:#fb7185; font-weight:600;">↓ 1 (烤机挤水)</span></td>
-          <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 3013 · 多: 9287 · 当量: 5664</td>
+          <td style="padding:12px 14px; text-align:center;">#13 (<b style="color:#34d399;">248.1</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#9 (<b style="color:#fb7185;">290.2</b>)</td>
+          <td style="padding:12px 14px; text-align:center;"><span style="color:#fb7185; font-weight:600;">↓ 4 (烤机挤水)</span></td>
+          <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 2619 · 多: 10084 · 当量: 6808</td>
         </tr>
     
 
@@ -1167,25 +1253,13 @@
           <td style="padding:12px 14px; font-weight:700; white-space:nowrap;">
             天玑 9400
             <span class="brand-badge brand-MediaTek" style="margin-left:6px;">联发科</span>
+            <span class="device-badge badge-both" style="margin-left:4px;">📱📟 双栖</span>
             
           </td>
-          <td style="padding:12px 14px; text-align:center;">#10 (<b style="color:#34d399;">243.8</b>)</td>
-          <td style="padding:12px 14px; text-align:center;">#6 (<b style="color:#fb7185;">266.6</b>)</td>
-          <td style="padding:12px 14px; text-align:center;"><span style="color:#fb7185; font-weight:600;">↓ 4 (烤机挤水)</span></td>
+          <td style="padding:12px 14px; text-align:center;">#14 (<b style="color:#34d399;">243.8</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#11 (<b style="color:#fb7185;">266.6</b>)</td>
+          <td style="padding:12px 14px; text-align:center;"><span style="color:#fb7185; font-weight:600;">↓ 3 (烤机挤水)</span></td>
           <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 2797 · 多: 8767 · 当量: 6272</td>
-        </tr>
-    
-
-        <tr >
-          <td style="padding:12px 14px; font-weight:700; white-space:nowrap;">
-            苹果 A17 Pro
-            <span class="brand-badge brand-Apple" style="margin-left:6px;">苹果</span>
-            
-          </td>
-          <td style="padding:12px 14px; text-align:center;">#14 (<b style="color:#34d399;">220.0</b>)</td>
-          <td style="padding:12px 14px; text-align:center;">#18 (<b style="color:#fb7185;">204.3</b>)</td>
-          <td style="padding:12px 14px; text-align:center;"><span style="color:#34d399; font-weight:700;">↑ +4 (日常跃升)</span></td>
-          <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 2969 · 多: 7599 · 当量: 3655</td>
         </tr>
     
 
@@ -1193,10 +1267,11 @@
           <td style="padding:12px 14px; font-weight:700; white-space:nowrap;">
             华为麒麟 9000
             <span class="brand-badge brand-HiSilicon" style="margin-left:6px;">华为</span>
+            <span class="device-badge badge-both" style="margin-left:4px;">📱📟 双栖</span>
             <span style="font-size:10px; background:#ec4899; color:#fff; padding:1px 5px; border-radius:3px; font-weight:bold; margin-left:4px;">基准100</span>
           </td>
-          <td style="padding:12px 14px; text-align:center;">#53 (<b style="color:#34d399;">100.0</b>)</td>
-          <td style="padding:12px 14px; text-align:center;">#47 (<b style="color:#fb7185;">100.0</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#59 (<b style="color:#34d399;">100.0</b>)</td>
+          <td style="padding:12px 14px; text-align:center;">#53 (<b style="color:#fb7185;">100.0</b>)</td>
           <td style="padding:12px 14px; text-align:center;"><span style="color:#fb7185; font-weight:600;">↓ 6 (烤机挤水)</span></td>
           <td style="padding:12px 14px; color:var(--text-dim); font-size:12px;">GB6单: 1262 · 多: 3507 · 当量: 2062</td>
         </tr>
@@ -1208,11 +1283,11 @@
 
     <!-- Platforms Section -->
     <section class="section-block" style="text-align:center;">
-      <h2 class="section-title" style="justify-content:center;">🌐 覆盖 75 款主流移动平台</h2>
-      <p style="color:var(--text-muted); font-size:13px; margin-bottom:16px;">全平台统一中文译名核验 · 涵盖苹果 A 系列、高通骁龙、联发科天玑、华为麒麟、三星 Exynos、谷歌 Tensor、小米玄戒</p>
+      <h2 class="section-title" style="justify-content:center;">🌐 覆盖 81 款主流移动与平板芯片</h2>
+      <p style="color:var(--text-muted); font-size:13px; margin-bottom:16px;">含手机专精 (75款) 与 平板/跨界专精 (18款) · 统一中文译名核验与基准归一化</p>
       <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
-        <span class="brand-badge brand-Apple" style="padding:4px 10px; font-size:12px;">苹果 Apple (16款)</span>
-        <span class="brand-badge brand-Qualcomm" style="padding:4px 10px; font-size:12px;">高通骁龙 Qualcomm (20款)</span>
+        <span class="brand-badge brand-Apple" style="padding:4px 10px; font-size:12px;">苹果 Apple (含 iPad M系列 / 20款)</span>
+        <span class="brand-badge brand-Qualcomm" style="padding:4px 10px; font-size:12px;">高通骁龙 Qualcomm (含 X Elite / 22款)</span>
         <span class="brand-badge brand-MediaTek" style="padding:4px 10px; font-size:12px;">联发科天玑 Dimensity (17款)</span>
         <span class="brand-badge brand-HiSilicon" style="padding:4px 10px; font-size:12px;">华为麒麟 Kirin (7款)</span>
         <span class="brand-badge brand-Samsung" style="padding:4px 10px; font-size:12px;">三星 Exynos (8款)</span>
@@ -1223,7 +1298,7 @@
   </div>
 
   <footer>
-    <p>SocRank 移动端 SoC 综合天梯榜 · 基于主流跑分实测与当量归一化整理 · <a href="https://github.com/Alex05250/socrank" target="_blank">GitHub 开源仓库</a></p>
+    <p>SocRank 移动与平板 SoC 综合天梯榜 · 基于主流跑分实测与当量归一化整理 · <a href="https://github.com/Alex05250/socrank" target="_blank">GitHub 开源仓库</a></p>
   </footer>
 </body>
 </html>
