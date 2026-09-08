@@ -205,7 +205,7 @@
       color: var(--text-muted);
       font-size: 14px;
       line-height: 1.6;
-      max-width: 780px;
+      max-width: 800px;
       margin: 0 auto;
     }
 
@@ -373,13 +373,6 @@
       font-weight: 700;
     }
 
-    .filter-btn.active-tablet {
-      background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
-      color: #fff;
-      border-color: #a855f7;
-      font-weight: 700;
-    }
-
     .sort-group {
       display: flex;
       gap: 8px;
@@ -411,7 +404,7 @@
       border-radius: 12px;
       padding: 14px 18px;
       display: grid;
-      grid-template-columns: 44px 240px 1fr 100px;
+      grid-template-columns: 44px 250px 1fr 100px;
       align-items: center;
       gap: 16px;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -495,10 +488,10 @@
       border: 1px solid rgba(168, 85, 247, 0.4);
     }
 
-    .badge-both {
-      background: rgba(56, 189, 248, 0.15);
+    .badge-phone-only {
+      background: rgba(56, 189, 248, 0.12);
       color: #7dd3fc;
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      border: 1px solid rgba(56, 189, 248, 0.25);
     }
 
     .chip-meta {
@@ -724,7 +717,7 @@
     <div class="mode-header">
       <div class="mode-tag-top mode-tag-daily">🍃 贴近真实日常 · 拒绝烤机虚标</div>
       <h1 class="page-title daily-title">日常流畅模式 (Daily Fluidity Profile)</h1>
-      <p class="page-desc">以单核大核瞬时爆发为核心，贴近移动端稳态温控线，真实反映日常滑动抗掉帧、应用冷启动与能效表现。支持手机与平板跨界筛选。</p>
+      <p class="page-desc">以单核大核瞬时爆发为核心，真实反映应用冷启动、手势打断与滑动掉帧表现。全面细分「手机端」与「平板端」真实跑分释放差距。</p>
     </div>
 
     <div class="mode-switch-bar">
@@ -733,17 +726,17 @@
     </div>
 
     <div class="formula-banner">
-      <div class="formula-tag"><b>基准</b> 华为麒麟 9000 = 100 分</div>
+      <div class="formula-tag"><b>基准</b> 华为麒麟 9000 (手机) = 100 分</div>
       <div class="formula-tag"><b>综合权重</b> GB6 单核 60% + GB6 多核 20% + GPU 20%</div>
       <div class="formula-tag"><b>单核锚点</b> 贴合 3.5W~5W 日用甜点区</div>
-      <div class="formula-tag"><b>收录范围</b> 手机 & 平板跨界平台 (81款)</div>
+      <div class="formula-tag"><b>收录范围</b> 手机 & 平板细分核心 (94款)</div>
     </div>
 
 
     <div class="controls">
       <div class="control-top-row">
         <div class="search-box">
-          <input type="text" id="searchInput" placeholder="搜索型号、厂商或形态 (如 iPad M4, 骁龙 X Elite, 天玑 9400)...">
+          <input type="text" id="searchInput" placeholder="搜索型号、厂商或平台版本 (如 天玑 9400 平板, 骁龙 8 Gen 3, iPad M4)...">
         </div>
         <div class="sort-group">
           <span>排序:</span>
@@ -761,9 +754,9 @@
       <div class="filter-row">
         <div class="filter-label">设备形态:</div>
         <div class="filter-group" id="deviceFilters">
-          <button class="filter-btn active" data-device="all">🌐 全形态通榜 (81)</button>
+          <button class="filter-btn active" data-device="all">🌐 全形态通榜 (94)</button>
           <button class="filter-btn" data-device="phone">📱 智能手机 (75)</button>
-          <button class="filter-btn" data-device="tablet">📟 平板 / 跨界 (18)</button>
+          <button class="filter-btn" data-device="tablet">📟 平板 / 跨界 (19)</button>
         </div>
       </div>
 
@@ -815,12 +808,7 @@
 
       let filtered = data.filter(chip => {
         // 设备形态过滤
-        let matchDevice = true;
-        if (currentDevice === 'phone') {
-          matchDevice = chip.device_type === 'phone' || chip.device_type === 'both';
-        } else if (currentDevice === 'tablet') {
-          matchDevice = chip.device_type === 'tablet' || chip.device_type === 'both';
-        }
+        let matchDevice = (currentDevice === 'all') || (chip.device_type === currentDevice);
 
         // 品牌过滤
         const matchBrand = (currentFilter === 'all') || (chip.brand === currentFilter);
@@ -854,15 +842,12 @@
       }
 
       filtered.forEach((chip, index) => {
-        const isBaseline = chip.name.includes("Kirin 9000") && !chip.name.includes("9000S");
+        const isBaseline = chip.id === "hisilicon-kirin-9000";
         const rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : ''));
         
-        let deviceBadge = '';
-        if (chip.device_type === 'tablet') {
-          deviceBadge = '<span class="device-badge badge-tablet-only">📟 平板专属</span>';
-        } else if (chip.device_type === 'both') {
-          deviceBadge = '<span class="device-badge badge-both">📱📟 双栖</span>';
-        }
+        let deviceBadge = chip.device_type === 'tablet' 
+          ? '<span class="device-badge badge-tablet-only">📟 平板端</span>'
+          : '<span class="device-badge badge-phone-only">📱 手机端</span>';
 
         const card = document.createElement('div');
         card.className = `chip-card ${isBaseline ? 'baseline' : ''}`;
@@ -934,9 +919,9 @@
               </div>
               <div class="detail-card">
                 <strong>形态与计算拆解</strong>
-                形态属性: ${chip.device_type === 'tablet' ? '📟 平板专属 (10W~15W 被动散热与 128-bit 显存)' : (chip.device_type === 'both' ? '📱📟 手机/平板双栖旗舰' : '📱 智能手机专属 (3.5W~5W 温控线)')}<br>
+                ${chip.platform_note ? `<b>平台调校:</b> ${chip.platform_note}<br>` : ''}
                 加权公式: ${chip.gb6s_norm}×0.6 + ${chip.gb6m_norm}×0.2 + ${chip.gpu_score}×0.2<br>
-                = <strong>${chip.daily_score}</strong> 分 (基准 9000 = 100)
+                = <strong>${chip.daily_score}</strong> 分 (基准 华为麒麟9000(手机) = 100.0)
               </div>
             </div>
           </div>
