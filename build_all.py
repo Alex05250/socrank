@@ -17,6 +17,12 @@ phone_count = len([c for c in chips if c["device_type"] == "phone"])
 tablet_count = len([c for c in chips if c["device_type"] == "tablet"])
 total_count = len(chips)
 
+# Cache-buster for data.js. A count-only token stays identical across data-only
+# edits (e.g. filling in process/GPU), so browsers and the Pages CDN keep serving
+# the stale dataset. Bind the version to the build time instead.
+from datetime import datetime
+data_version = f"{total_count}c-{datetime.now().strftime('%Y%m%d%H%M%S')}"
+
 def get_navbar(active_page):
     home_act = "active" if active_page == "home" else ""
     daily_act = "active" if active_page == "daily" else ""
@@ -991,7 +997,7 @@ daily_content = f"""<!DOCTYPE html>
     <p>SocRank 数据源基于主流跑分实测及实验室样本归一化整理 · <a href="https://github.com/Alex05250/socrank" target="_blank">GitHub 开源</a></p>
   </footer>
 
-  <script src="data.js?v={total_count}chips"></script>
+  <script src="data.js?v={data_version}"></script>
   <script>
 {daily_js}
   </script>
@@ -1210,7 +1216,7 @@ peak_content = f"""<!DOCTYPE html>
     <p>SocRank 数据源基于主流跑分实测及实验室样本归一化整理 · <a href="https://github.com/Alex05250/socrank" target="_blank">GitHub 开源</a></p>
   </footer>
 
-  <script src="data.js?v={total_count}chips"></script>
+  <script src="data.js?v={data_version}"></script>
   <script>
 {peak_js}
   </script>
