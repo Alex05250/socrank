@@ -1,5 +1,28 @@
 [
   {
+    "id": "apple-a20-pro",
+    "name": "Apple A20 Pro",
+    "brand": "Apple",
+    "year": 2026,
+    "process": "2nm (N2 GAA)",
+    "gpu": "Apple A20 Pro GPU (7核)",
+    "gb6s": 4719,
+    "gb6m": 12677,
+    "cpu_score": 365.2,
+    "wle_raw": null,
+    "snl_raw": 4263,
+    "wle_equiv": 10231.2,
+    "gpu_method": "SNL折算 (SNL 4263 × 2.4)",
+    "gpu_score": 496.2,
+    "overall": 417.6,
+    "name_cn": "苹果 A20 Pro",
+    "brand_cn": "苹果",
+    "gb6s_norm": 373.9,
+    "gb6m_norm": 361.5,
+    "daily_score": 395.9,
+    "device_type": "phone"
+  },
+  {
     "id": "xiaomi-xring-o3",
     "name": "Xiaomi Xring O3",
     "brand": "Xiaomi",

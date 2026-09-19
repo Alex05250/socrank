@@ -16,6 +16,13 @@ daily_ranks = {c["id"]: i + 1 for i, c in enumerate(daily_sorted)}
 phone_count = len([c for c in chips if c["device_type"] == "phone"])
 tablet_count = len([c for c in chips if c["device_type"] == "tablet"])
 total_count = len(chips)
+apple_count = len([c for c in chips if c["brand"] == "Apple"])
+qc_count = len([c for c in chips if c["brand"] == "Qualcomm"])
+mtk_count = len([c for c in chips if c["brand"] == "MediaTek"])
+hisi_count = len([c for c in chips if c["brand"] == "HiSilicon"])
+sam_count = len([c for c in chips if c["brand"] == "Samsung"])
+goog_count = len([c for c in chips if c["brand"] == "Google"])
+mi_count = len([c for c in chips if c["brand"] == "Xiaomi"])
 
 # Cache-buster for data.js. A count-only token stays identical across data-only
 # edits (e.g. filling in process/GPU), so browsers and the Pages CDN keep serving
@@ -1226,6 +1233,7 @@ peak_content = f"""<!DOCTYPE html>
 
 # Portal index.html
 focus_cids = [
+    "apple-a20-pro",
     "apple-m5-ipad",
     "xiaomi-xring-o3-tablet",
     "xiaomi-xring-o3",
@@ -1706,13 +1714,13 @@ index_content = f"""<!DOCTYPE html>
       <h2 class="section-title" style="justify-content:center;">🌐 覆盖 {total_count} 款主流移动与平板芯片</h2>
       <p style="color:var(--text-muted); font-size:13px; margin-bottom:16px;">智能手机专精 ({phone_count}款) · 平板与跨界专精 ({tablet_count}款) · 统一中文平台标注与基准归一化</p>
       <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
-        <span class="brand-badge brand-Apple" style="padding:4px 10px; font-size:12px;">苹果 Apple (含 iPad M系列 / 23款)</span>
-        <span class="brand-badge brand-Qualcomm" style="padding:4px 10px; font-size:12px;">高通骁龙 Qualcomm (含 X Elite / 26款)</span>
-        <span class="brand-badge brand-MediaTek" style="padding:4px 10px; font-size:12px;">联发科天玑 Dimensity (20款)</span>
-        <span class="brand-badge brand-HiSilicon" style="padding:4px 10px; font-size:12px;">华为麒麟 Kirin (11款)</span>
-        <span class="brand-badge brand-Samsung" style="padding:4px 10px; font-size:12px;">三星 Exynos (8款)</span>
-        <span class="brand-badge brand-Google" style="padding:4px 10px; font-size:12px;">谷歌 Tensor (5款)</span>
-        <span class="brand-badge brand-Xiaomi" style="padding:4px 10px; font-size:12px;">小米玄戒 Xring (3款)</span>
+        <span class="brand-badge brand-Apple" style="padding:4px 10px; font-size:12px;">苹果 Apple (含 iPad M系列 / {apple_count}款)</span>
+        <span class="brand-badge brand-Qualcomm" style="padding:4px 10px; font-size:12px;">高通骁龙 Qualcomm (含 X Elite / {qc_count}款)</span>
+        <span class="brand-badge brand-MediaTek" style="padding:4px 10px; font-size:12px;">联发科天玑 Dimensity ({mtk_count}款)</span>
+        <span class="brand-badge brand-HiSilicon" style="padding:4px 10px; font-size:12px;">华为麒麟 Kirin ({hisi_count}款)</span>
+        <span class="brand-badge brand-Samsung" style="padding:4px 10px; font-size:12px;">三星 Exynos ({sam_count}款)</span>
+        <span class="brand-badge brand-Google" style="padding:4px 10px; font-size:12px;">谷歌 Tensor ({goog_count}款)</span>
+        <span class="brand-badge brand-Xiaomi" style="padding:4px 10px; font-size:12px;">小米玄戒 Xring ({mi_count}款)</span>
       </div>
     </section>
   </div>
