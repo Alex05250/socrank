@@ -2,7 +2,7 @@
 import json
 import os
 
-BASE_DIR = r"C:\Users\21458\Desktop\socrank"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(BASE_DIR, "final_chips.json"), "r", encoding="utf-8") as f:
     chips = json.load(f)
 
@@ -1233,6 +1233,8 @@ peak_content = f"""<!DOCTYPE html>
 
 # Portal index.html
 focus_cids = [
+    "mediatek-dimensity-9600-pro",
+    "qualcomm-snapdragon-8-elite-extreme-gen-6",
     "apple-a20-pro",
     "apple-m5-ipad",
     "xiaomi-xring-o3-tablet",
